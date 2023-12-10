@@ -1,0 +1,92 @@
+/* Write your CSS here */
+.bg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(to right, #ffffff, #cffcf1);
+  height: 100vh;
+}
+.timer-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.running-timer {
+  display: flex;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/digital-timer-elapsed-bg.png');
+  justify-content: center;
+  height: 300px;
+  width: 320px;
+  background-size: cover;
+  align-items: center;
+}
+.circle {
+  height: 80px;
+  width: 80px;
+  border-radius: 40px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.time {
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 20px;
+  color: #beece1;
+  margin: 0;
+}
+.status {
+  margin: 0;
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 13px;
+}
+.btn-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-c {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 17px;
+}
+button {
+  outline: none;
+  background-color: transparent;
+  border: 0px;
+}
+
+.start-btn {
+  height: 40px;
+  width: 40px;
+}
+.timer-limit-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.set-limit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 17px;
+}
+.span-style {
+  background-image: linear-gradient(to left, #00d9f5, #57eb49);
+  padding: 5px;
+  height: 30px;
+  width: 45px;
+  border-radius: 5px;
+}
