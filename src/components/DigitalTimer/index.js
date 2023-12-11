@@ -3,46 +3,61 @@ import {Component} from 'react'
 import './index.css'
 
 class DigitalTimer extends Component {
-  state = {time: 25 * 60, isStarted: false}
-
-  onStart = () => {
-    const timerID = setInterval(this.timestarts, 1000)
+  state = {
+    timeinSeconds: 25 * 60,
+    minites: Math.floor((25 * 60) / 60),
+    isStarted: false,
   }
 
-  timestarts = () => {
-    this.setState(prevState => ({time: prevState.time - 1}))
+  onReset = () => {
+    clearInterval(this.timerID)
+    this.setState({timeinSeconds: 25 * 60, isStarted: false})
+  }
+
+  onStart = () => {
+    this.timerID = setInterval(() => {
+      this.setState(prevState => ({timeinSeconds: prevState.timeinSeconds - 1}))
+    }, 1000)
+  }
+
+  onPause = () => {
+    clearInterval(this.timerID)
+    this.setState({isStarted: false})
   }
 
   onIncrement = () => {
     this.setState(prevState => {
-      const {time} = prevState
-      return {time: time + 1}
+      const {minites} = prevState
+      return {minites: minites + 1}
     })
   }
 
   onDecrement = () => {
     this.setState(prevState => {
-      const {time} = prevState
-      if (time > Math.floor(time / 60)) {
-        return {time: time - 1}
+      const {minites, timeinSeconds} = prevState
+      if (minites > Math.floor(timeinSeconds / 60)) {
+        return {minites: minites - 1}
       }
-      return {time}
+      return {minites}
     })
   }
 
   onHandlePlay = () => {
-    this.setState(prevState => {
-      const {isStarted} = prevState
-      return {isStarted: !isStarted}
-    })
+    const {isStarted} = this.state
+    this.setState({isStarted: !isStarted})
+    if (isStarted) {
+      this.onPause()
+    } else {
+      this.onStart()
+    }
   }
 
   render() {
-    const {time, isStarted} = this.state
-    let min = Math.floor(time / 60)
-    let sec = time % 60
-    min = min < 10 ? '0' + min : min
-    sec = sec < 10 ? '0' + sec : sec
+    const {timeinSeconds, minites, isStarted} = this.state
+    let min = minites
+    let sec = timeinSeconds % 60
+    min = min < 10 ? `0${min}` : min
+    sec = sec < 10 ? `0${sec}` : sec
 
     return (
       <div className="bg">
@@ -50,9 +65,9 @@ class DigitalTimer extends Component {
         <div className="timer-card">
           <div className="running-timer">
             <div className="circle">
-              <p className="time">
+              <h1 className="time">
                 {min}:{sec}
-              </p>
+              </h1>
               <p className="status">{isStarted ? 'Running' : 'Paused'}</p>
             </div>
           </div>
@@ -69,27 +84,39 @@ class DigitalTimer extends Component {
                         : 'https://assets.ccbp.in/frontend/react-js/play-icon-img.png'
                     }
                   />
+
+                  <p className="btn-text">{isStarted ? 'Pause' : 'Start'}</p>
                 </button>
-                <p className="btn-text">{isStarted ? 'Pause' : 'Start'}</p>
               </div>
               <div className="btn-c">
-                <button type="button" onClick={this}>
+                <button type="button" onClick={this.onReset}>
                   <img
                     alt="reset icon"
                     className="start-btn"
                     src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
-                  />
+                  />{' '}
+                  <p className="btn-text">Reset</p>
                 </button>
-                <p className="btn-text">Reset</p>
               </div>
             </div>
             <div className="timer-limit-container">
               <p>Set Timer limit</p>
               <div className="set-limit">
-                <p onClick={this.onDecrement}>-</p>
-                <p className="span-style">{(25 * 60) / 60}</p>
-
-                <p onClick={this.onIncrement}>+</p>
+                <button
+                  type="button"
+                  onClick={this.onDecrement}
+                  disabled={isStarted}
+                >
+                  -
+                </button>
+                <p className="span-style">{minites}</p>
+                <button
+                  type="button"
+                  onClick={this.onIncrement}
+                  disabled={isStarted}
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
