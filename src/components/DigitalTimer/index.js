@@ -5,8 +5,13 @@ import './index.css'
 class DigitalTimer extends Component {
   state = {
     timeinSeconds: 25 * 60,
-    minites: Math.floor((25 * 60) / 60),
+    minites: (25 * 60) / 60,
+    mini: 25,
     isStarted: false,
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID)
   }
 
   onReset = () => {
@@ -16,7 +21,10 @@ class DigitalTimer extends Component {
 
   onStart = () => {
     this.timerID = setInterval(() => {
-      this.setState(prevState => ({timeinSeconds: prevState.timeinSeconds - 1}))
+      this.setState(prevState => ({
+        timeinSeconds: prevState.timeinSeconds - 1,
+        minites: Math.floor((prevState.timeinSeconds - 1) / 60),
+      }))
     }, 1000)
   }
 
@@ -27,18 +35,18 @@ class DigitalTimer extends Component {
 
   onIncrement = () => {
     this.setState(prevState => {
-      const {minites} = prevState
-      return {minites: minites + 1}
+      const {mini} = prevState
+      return {mini: mini + 1}
     })
   }
 
   onDecrement = () => {
     this.setState(prevState => {
-      const {minites, timeinSeconds} = prevState
-      if (minites > Math.floor(timeinSeconds / 60)) {
-        return {minites: minites - 1}
+      const {mini} = prevState
+      if (mini > 1) {
+        return {mini: mini - 1}
       }
-      return {minites}
+      return {mini}
     })
   }
 
@@ -53,10 +61,10 @@ class DigitalTimer extends Component {
   }
 
   render() {
-    const {timeinSeconds, minites, isStarted} = this.state
-    let min = minites
+    const {timeinSeconds, minites, mini, isStarted} = this.state
+    let min = mini
     let sec = timeinSeconds % 60
-    min = min < 10 ? `0${min}` : min
+    min = minites < 10 ? `0${minites}` : minites
     sec = sec < 10 ? `0${sec}` : sec
 
     return (
@@ -94,7 +102,7 @@ class DigitalTimer extends Component {
                     alt="reset icon"
                     className="start-btn"
                     src="https://assets.ccbp.in/frontend/react-js/reset-icon-img.png"
-                  />{' '}
+                  />
                   <p className="btn-text">Reset</p>
                 </button>
               </div>
@@ -102,19 +110,11 @@ class DigitalTimer extends Component {
             <div className="timer-limit-container">
               <p>Set Timer limit</p>
               <div className="set-limit">
-                <button
-                  type="button"
-                  onClick={this.onDecrement}
-                  disabled={isStarted}
-                >
+                <button type="button" onClick={this.onDecrement}>
                   -
                 </button>
-                <p className="span-style">{minites}</p>
-                <button
-                  type="button"
-                  onClick={this.onIncrement}
-                  disabled={isStarted}
-                >
+                <p className="span-style">{mini}</p>
+                <button type="button" onClick={this.onIncrement}>
                   +
                 </button>
               </div>
